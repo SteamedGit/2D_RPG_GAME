@@ -12,8 +12,18 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     Transform groundCheck;
-
     public Transform GroundCheck { get => groundCheck; set => groundCheck = value; }
+   
+
+    [SerializeField]
+    Transform groundCheckL;
+    public Transform GroundCheckL { get => groundCheckL; set => groundCheckL = value; }
+    
+
+    [SerializeField]
+    Transform groundCheckR;
+    public Transform GroundCheckR { get => groundCheckR; set => groundCheckR = value; }
+
 
     [SerializeField]
     private float runSpeed = 1.5f;
@@ -34,13 +44,17 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")))
+        //Player Movement & Corresponding Animation
+        if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
+            Physics2D.Linecast(transform.position, groundCheckL.position, 1 << LayerMask.NameToLayer("Ground")) ||
+            Physics2D.Linecast(transform.position, groundCheckR.position, 1 << LayerMask.NameToLayer("Ground")))
         {
             isGrounded = true;
         }
         else
         {
-            isGrounded = false; 
+            isGrounded = false;
+            animator.Play("Player_jump");
         }
 
         if (Input.GetKey("d") || Input.GetKey("right"))
