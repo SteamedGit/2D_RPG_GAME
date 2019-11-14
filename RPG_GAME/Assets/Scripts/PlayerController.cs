@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private float runSpeed = 1.5f;
 
     [SerializeField]
-    private float jumpSpeed = 5f;
+    private float jumpSpeed = 5f; 
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         //Player Movement & Corresponding Animation
         if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||
             Physics2D.Linecast(transform.position, groundCheckL.position, 1 << LayerMask.NameToLayer("Ground")) ||
@@ -62,19 +63,21 @@ public class PlayerController : MonoBehaviour
             rb2d.velocity = new Vector2(runSpeed, rb2d.velocity.y);
             if (isGrounded)
             {
-                animator.Play("Player_run");
+                animator.Play("Player_runRight");
+                spriteRenderer.flipX = false;
             }
            
-            spriteRenderer.flipX = false;
+            
         }
         else if (Input.GetKey("a") || Input.GetKey("left"))
         {
             rb2d.velocity = new Vector2(-runSpeed, rb2d.velocity.y);
             if (isGrounded)
             {
-                animator.Play("Player_run");
+                animator.Play("Player_runLeft");
+                spriteRenderer.flipX = true;
             } 
-            spriteRenderer.flipX = true;
+            
         }
         else
         {
@@ -86,10 +89,11 @@ public class PlayerController : MonoBehaviour
            
         }
 
-        if (Input.GetKey("space") && isGrounded)
+       if (Input.GetKey("space") && isGrounded)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
             animator.Play("Player_jump");
-        }
+            
+        } 
     }
 }
