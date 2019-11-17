@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: e918503f674cb9244b4ff5f0cf39cf3d
+guid: ac5205c018fbebf47929cf7d456a348b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7304266472415244525
-    second: Character Sprite Sheet (RUNNING)_0
-  - first:
       213: 3810088589206548039
     second: player_run1
-  - first:
-      213: 7434386539238551620
-    second: Character Sprite Sheet (RUNNING)_2
   - first:
       213: 1829035657635991890
     second: player_run2
@@ -78,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -90,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -102,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,34 +107,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Character Sprite Sheet (RUNNING)_0
-      rect:
-        serializedVersion: 2
-        x: 17
-        y: 184
-        width: 12
-        height: 9
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a1fa8d7c96b7dc346b8aad838a32decc
-      internalID: 7304266472415244525
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: player_run1
       rect:
         serializedVersion: 2
-        x: 25
-        y: 176
+        x: 17
+        y: 193
         width: 91
-        height: 121
+        height: 116
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -148,29 +121,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 09118bb0eb7042c4ba199c356797c44f
+      spriteID: 5c1ae0bf02ef0be4099e8a0e934f04f6
       internalID: 3810088589206548039
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Character Sprite Sheet (RUNNING)_2
-      rect:
-        serializedVersion: 2
-        x: 174
-        y: 190
-        width: 12
-        height: 9
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7260b25ed5db8634d92ecf013b205713
-      internalID: 7434386539238551620
       vertices: []
       indices: 
       edges: []
@@ -179,9 +131,9 @@ TextureImporter:
       name: player_run2
       rect:
         serializedVersion: 2
-        x: 194
-        y: 182
-        width: 92
+        x: 216
+        y: 186
+        width: 75
         height: 121
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -190,7 +142,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1582e65fc9209c94a96d6dd68689d371
+      spriteID: 679c2589789b9d34a94a7ad7daff47da
       internalID: 1829035657635991890
       vertices: []
       indices: 
@@ -200,8 +152,8 @@ TextureImporter:
       name: player_run3
       rect:
         serializedVersion: 2
-        x: 50
-        y: 12
+        x: 35
+        y: 38
         width: 108
         height: 116
       alignment: 7
@@ -211,7 +163,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 40f11c32dab6e9747971ab845a84f7ea
+      spriteID: dc19a55c62b665b4c92efffe06ea9324
       internalID: -4617619813356609521
       vertices: []
       indices: 
