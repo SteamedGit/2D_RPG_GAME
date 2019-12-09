@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     }
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && isGrounded)
+        if (Input.GetButtonDown("Fire1") && isGrounded) //Basic slash attack that can only occur when the player is grounded
         {
             isAttacking = true;
             animator.Play("Player_basicAttack1");
