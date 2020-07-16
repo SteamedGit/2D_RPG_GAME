@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     bool isFacingLeft;
     bool isFacingRight;
     bool isAttacking;
+    bool isBlocking;
 
     [SerializeField]
     GameObject basicAttack1Hitbox;
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         isFacingRight = true; //apparently its useful to keep track of what direction the player is facing 
         isFacingLeft = false;
         isAttacking = false;
+        isBlocking = false;
         basicAttack1Hitbox.SetActive(false); //attack hitbox is off by default
        
 
@@ -57,11 +59,18 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     }
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && isGrounded) //Basic slash attack that can only occur when the player is grounded
+        if (Input.GetButtonDown("Fire1") && isGrounded && !isAttacking) //Basic slash attack that can only occur when the player is grounded
         {
             isAttacking = true;
             animator.Play("Player_basicAttack1");
             StartCoroutine(DoAttack());
+        }
+        if (Input.GetButtonDown("Fire2") && isGrounded) //Basic block that can only occur when the player is grounded
+        {
+            isBlocking = true;
+            animator.Play("Player_block");
+            StartCoroutine(DoBlock());
+
         }
 
         
@@ -73,6 +82,14 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         yield return new WaitForSeconds(.2f);
         basicAttack1Hitbox.SetActive(false);
         isAttacking = false;
+    }
+
+   IEnumerator DoBlock()
+    {
+        //some block logic
+        yield return new WaitForSeconds(.35f);
+        //more block logic
+        isBlocking = false;
     }
    
     private void FixedUpdate()
@@ -96,7 +113,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         if (Input.GetKey("d") || Input.GetKey("right"))  //If the user inputs d or the standard right key for input, apply a velocity runSpeed to the right 
         {
             rb2d.velocity = new Vector2(runSpeed, rb2d.velocity.y); 
-            if (isGrounded && !isAttacking)                                               //If the player is grounded play the running to the right animation
+            if (isGrounded && !isAttacking && !isBlocking)                                               //If the player is grounded play the running to the right animation
             {
                 animator.Play("Player_runRight");
                 transform.localScale = new Vector3(1,1,1); //Local Scale oriented to the right 
@@ -111,7 +128,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         else if (Input.GetKey("a") || Input.GetKey("left")) //If the user inputs a or the standard left key for input, apply a velocity runSpeed to the left
         {
             rb2d.velocity = new Vector2(-runSpeed, rb2d.velocity.y);
-            if (isGrounded && !isAttacking)                                           //If the player is grounded play the running to the left animation 
+            if (isGrounded && !isAttacking && !isBlocking)                                           //If the player is grounded play the running to the left animation 
             {
                 animator.Play("Player_runLeft");    //flip the object(includes colliders) in the X direction so that the player faces the left 
                 transform.localScale = new Vector3(-1,1,1); //Local Scale oriented to the left 
@@ -126,7 +143,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         else                                                //if the player is moving neither right nor left & is on a ground layer, play the idle animation
         {
             rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-            if (isGrounded && !isAttacking)
+            if (isGrounded && !isAttacking && !isBlocking)
             {
                 animator.Play("Player_idle");
                
@@ -134,7 +151,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
            
         }
 
-       if ((Input.GetKey("space")||Input.GetKey("w")||Input.GetKey("up")) && isGrounded && !isAttacking)    //if the player is on the ground and the user has pressed the space key, apply a velocity jumpspeed upwards 
+       if ((Input.GetKey("space")||Input.GetKey("w")||Input.GetKey("up")) && isGrounded && !isAttacking && !isBlocking)    //if the player is on the ground and the user has pressed the space key, apply a velocity jumpspeed upwards 
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpSpeed);
             animator.Play("Player_jump");             //play the jump animation
