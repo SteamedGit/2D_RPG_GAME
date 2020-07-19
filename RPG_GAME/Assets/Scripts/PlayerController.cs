@@ -17,7 +17,11 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     [SerializeField]
     GameObject basicAttack1Hitbox;
     public GameObject BasicAttack1Hitbox { get => basicAttack1Hitbox; set => basicAttack1Hitbox = value; }
-    
+
+    [SerializeField]
+    GameObject basicJumpAttack1Hitbox;
+    public GameObject BasicJumpAttack1Hitbox { get => basicJumpAttack1Hitbox; set => basicJumpAttack1Hitbox = value; }
+
 
     [SerializeField]
     Transform groundCheck;
@@ -32,7 +36,6 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     [SerializeField]
     Transform groundCheckR;
     public Transform GroundCheckR { get => groundCheckR; set => groundCheckR = value; }
-
 
     [SerializeField]
     private float runSpeed = 1.5f;
@@ -53,6 +56,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         isAttacking = false;
         isBlocking = false;
         basicAttack1Hitbox.SetActive(false); //attack hitbox is off by default
+        basicJumpAttack1Hitbox.SetActive(false);
        
 
 
@@ -65,6 +69,14 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
             animator.Play("Player_basicAttack1");
             StartCoroutine(DoAttack());
         }
+        if(Input.GetButtonDown("Fire1") && !isGrounded && !isAttacking)
+        {
+            isAttacking = true;
+            animator.Play("Player_basicJumpAttack1");
+            StartCoroutine(DoBasicJumpAttack());
+           
+        }
+
         if (Input.GetButtonDown("Fire2") && isGrounded) //Basic block that can only occur when the player is grounded
         {
             isBlocking = true;
@@ -72,6 +84,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
             StartCoroutine(DoBlock());
 
         }
+        
 
         
     }
@@ -81,6 +94,14 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         basicAttack1Hitbox.SetActive(true);
         yield return new WaitForSeconds(.2f);
         basicAttack1Hitbox.SetActive(false);
+        isAttacking = false;
+    }
+
+    IEnumerator DoBasicJumpAttack()
+    {
+        basicJumpAttack1Hitbox.SetActive(true);
+        yield return new WaitForSeconds(.35f);
+        basicJumpAttack1Hitbox.SetActive(false);
         isAttacking = false;
     }
 
@@ -104,8 +125,12 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         }
         else
         {
-            isGrounded = false;            
-            animator.Play("Player_jump");      //If the player is not grounded play the jump animation
+            isGrounded = false;
+            if (!isAttacking)
+            {
+                animator.Play("Player_jump"); //If the player is not grounded & not attacking play the jump animation
+            }
+                
            
          
         }
