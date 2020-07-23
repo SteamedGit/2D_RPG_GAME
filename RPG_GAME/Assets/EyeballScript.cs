@@ -22,7 +22,7 @@ public class EyeballScript : MonoBehaviour
     float stopDistance;
 
     [SerializeField]
-    float bobSpeed;
+    int health;
 
     float idleHeight;
 
@@ -40,7 +40,7 @@ public class EyeballScript : MonoBehaviour
     {
         float distToPlayer = Vector2.Distance(transform.position, player.position);
         // print("distToPlayer: " + distToPlayer);
-        print(rb2d.velocity);
+        //print(rb2d.velocity);
         if (distToPlayer < agroRange && Math.Abs((transform.position.x - player.position.x)) > stopDistance)
         {
             isChasing = true;
@@ -62,9 +62,34 @@ public class EyeballScript : MonoBehaviour
 
         }
 
+        if(health <= 0)
+        {
+            killSelf();
+        }
+
     }
 
-   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "BasicAttack1HitBox")
+        {
+            health = health - collision.gameObject.GetComponent<BasicAttack1Script>().doDamage();
+            print(health);
+            
+        }
+        if(collision.gameObject.name == "BasicJumpAttack1HitBox")
+        {
+            health = health - collision.gameObject.GetComponent<BasicJumpAttack1Script>().doDamage();
+            print(health);
+        }
+    }
+
+    private void killSelf()
+    {
+        Destroy(gameObject);
+    }
+
+
     void ChasePlayer()
     {
         if(transform.position.x < player.position.x) // on left of player
