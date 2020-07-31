@@ -38,10 +38,14 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     public Transform GroundCheckR { get => groundCheckR; set => groundCheckR = value; }
 
     [SerializeField]
+    int health;
+
+    [SerializeField]
     private float runSpeed = 1.5f;
 
     [SerializeField]
     private float jumpSpeed = 5f;
+
 
    
 
@@ -108,13 +112,20 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
    IEnumerator DoBlock()
     {
         //some block logic
-        yield return new WaitForSeconds(.35f);
+        yield return new WaitForSeconds(2f);
         //more block logic
         isBlocking = false;
     }
-   
+
+
     private void FixedUpdate()
     {
+        if(health <= 0)
+        {
+            killSelf();
+        }
+        
+        
         
         //Player Movement & Corresponding Animation
         if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||                     //Check if the player is grounded
@@ -183,5 +194,40 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         
             
         } 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Eyeball_Projectile(Clone)")
+        {
+            if (isBlocking)
+            {
+                if (isFacingLeft && transform.position.x < gameObject.transform.position.x)
+                {
+                    print("Blocked");
+                }
+                else if(isFacingRight && transform.position.x > gameObject.transform.position.x)
+                {
+                    print("Blocked");
+                }
+                else
+                {
+                    print("Missed Block");
+                    health = health - collision.gameObject.GetComponent<EyeballProjectileScript>().doDamage();
+                    print(health);
+                }
+            }
+            else
+            {
+                health = health - collision.gameObject.GetComponent<EyeballProjectileScript>().doDamage();
+                print(health);
+            }
+          
+        }
+    }
+
+    private void killSelf()
+    {
+        Destroy(gameObject);
     }
 }
