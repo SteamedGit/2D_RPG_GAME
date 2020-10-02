@@ -12,5 +12,6 @@ More to come. (Latest version is on Enemy-Eyeball branch)
 ![Screenshot (195)](https://user-images.githubusercontent.com/54950149/94935408-52451d00-04cd-11eb-92f1-5395d8b4fbcf.png)
 ![Screenshot (196)](https://user-images.githubusercontent.com/54950149/94935590-891b3300-04cd-11eb-83c4-8d3cece18dfb.png)
 
+Project Members: Oscar Field, Timothy Hitge and Nicholas Bossi
 
 
