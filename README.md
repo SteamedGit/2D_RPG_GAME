@@ -1,6 +1,6 @@
 # 2D_RPG_GAME
 
-##Current stage of development
+## Current stage of development
 
 * Character model with working colliders and running, jumping, attacking and blocking animations.
 * Camera follow and bounds set up.
