@@ -99,13 +99,13 @@ public class EyeballScript : MonoBehaviour
         if (collision.gameObject.name == "BasicAttack1HitBox")
         {
             health = health - collision.gameObject.GetComponent<BasicAttack1Script>().doDamage();
-            print(health);
+            //print(health);
             
         }
         if(collision.gameObject.name == "BasicJumpAttack1HitBox")
         {
             health = health - collision.gameObject.GetComponent<BasicJumpAttack1Script>().doDamage();
-            print(health);
+            //print(health);
         }
     }
 

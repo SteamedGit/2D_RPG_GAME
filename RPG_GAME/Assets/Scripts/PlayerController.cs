@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     bool isFacingLeft;
     bool isFacingRight;
     bool isAttacking;
-    bool isBlocking;
+   public bool isBlocking;
 
     [SerializeField]
     GameObject basicAttack1Hitbox;
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
    IEnumerator DoBlock()
     {
         //some block logic
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(.35f);
         //more block logic
         isBlocking = false;
     }
@@ -200,13 +200,16 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     {
         if (collision.gameObject.name == "Eyeball_Projectile(Clone)")
         {
-            if (isBlocking)
+
+            //System.Console.WriteLine("this.IsBlocking: {0} ", this.isBlocking);
+            print(this.isBlocking);
+            if (this.isBlocking)
             {
-                if (isFacingLeft && transform.position.x < gameObject.transform.position.x)
+                if (isFacingLeft && transform.position.x > collision.gameObject.transform.position.x)
                 {
                     print("Blocked");
                 }
-                else if(isFacingRight && transform.position.x > gameObject.transform.position.x)
+                else if (isFacingRight && transform.position.x < collision.gameObject.transform.position.x)
                 {
                     print("Blocked");
                 }
