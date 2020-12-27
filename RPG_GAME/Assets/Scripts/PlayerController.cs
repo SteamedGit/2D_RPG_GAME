@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     bool isFacingLeft;
     bool isFacingRight;
     bool isAttacking;
-    bool isBlocking;
+   public bool isBlocking;
 
     [SerializeField]
     GameObject basicAttack1Hitbox;
@@ -38,10 +38,14 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     public Transform GroundCheckR { get => groundCheckR; set => groundCheckR = value; }
 
     [SerializeField]
+    int health;
+
+    [SerializeField]
     private float runSpeed = 1.5f;
 
     [SerializeField]
     private float jumpSpeed = 5f;
+
 
    
 
@@ -112,9 +116,16 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         //more block logic
         isBlocking = false;
     }
-   
+
+
     private void FixedUpdate()
     {
+        if(health <= 0)
+        {
+            killSelf();
+        }
+        
+        
         
         //Player Movement & Corresponding Animation
         if (Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground")) ||                     //Check if the player is grounded
@@ -183,5 +194,43 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
         
             
         } 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Eyeball_Projectile(Clone)")
+        {
+
+            //System.Console.WriteLine("this.IsBlocking: {0} ", this.isBlocking);
+            print(this.isBlocking);
+            if (this.isBlocking)
+            {
+                if (isFacingLeft && transform.position.x > collision.gameObject.transform.position.x)
+                {
+                    print("Blocked");
+                }
+                else if (isFacingRight && transform.position.x < collision.gameObject.transform.position.x)
+                {
+                    print("Blocked");
+                }
+                else
+                {
+                    print("Missed Block");
+                    health = health - collision.gameObject.GetComponent<EyeballProjectileScript>().doDamage();
+                    print(health);
+                }
+            }
+            else
+            {
+                health = health - collision.gameObject.GetComponent<EyeballProjectileScript>().doDamage();
+                print(health);
+            }
+          
+        }
+    }
+
+    private void killSelf()
+    {
+        Destroy(gameObject);
     }
 }
