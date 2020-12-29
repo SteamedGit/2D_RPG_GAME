@@ -198,11 +198,12 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+       // print(collision.gameObject.name);
         if (collision.gameObject.name == "Eyeball_Projectile(Clone)")
         {
 
             //System.Console.WriteLine("this.IsBlocking: {0} ", this.isBlocking);
-            print(this.isBlocking);
+            //print(this.isBlocking);
             if (this.isBlocking)
             {
                 if (isFacingLeft && transform.position.x > collision.gameObject.transform.position.x)
@@ -227,7 +228,18 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
             }
           
         }
+        else if (collision.gameObject.CompareTag("dialogueTrigger"))
+        {
+            print("dialogue started");
+            GameObject npc = collision.gameObject;
+            GameObject canvas = npc.transform.GetChild(0).gameObject;
+            GameObject button = canvas.transform.GetChild(0).gameObject;
+            canvas.SetActive(true);
+            button.SetActive(true);
+
+        }
     }
+ 
 
     private void killSelf()
     {
