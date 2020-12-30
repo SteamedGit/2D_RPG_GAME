@@ -155,8 +155,8 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
                 transform.localScale = new Vector3(1,1,1); //Local Scale oriented to the right 
                 isFacingRight = true;
                 isFacingLeft = false;
-                Debug.Log(isFacingRight);
-                Debug.Log(isFacingLeft);
+                //Debug.Log(isFacingRight);
+                //Debug.Log(isFacingLeft);
             }
            
             
@@ -170,8 +170,8 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
                 transform.localScale = new Vector3(-1,1,1); //Local Scale oriented to the left 
                 isFacingRight = false;
                 isFacingLeft = true;
-                Debug.Log(isFacingRight);
-                Debug.Log(isFacingLeft);
+                //Debug.Log(isFacingRight);
+               // Debug.Log(isFacingLeft);
             }
 
             

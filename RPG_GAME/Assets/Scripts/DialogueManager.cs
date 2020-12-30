@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
+using System.Text.RegularExpressions;
 using System;
 
 public class DialogueManager : MonoBehaviour
@@ -16,9 +16,8 @@ public class DialogueManager : MonoBehaviour
     GameObject dialogueText;
 
     [SerializeField]
-    string relativePath;
+    String pathToFile;
 
-    //filled with dummy values. need to generalise
    public void StartDialogue()
     {
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = false;
@@ -29,73 +28,69 @@ public class DialogueManager : MonoBehaviour
         button.SetActive(false);
         dialogueMenu.SetActive(true);
 
-
-        string path = Path.Combine(Application.streamingAssetsPath, relativePath);
-        string[] dialogueTree = File.ReadAllLines(path);
-        List<DialogueNode> dialogueList = new List<DialogueNode>();
+        //Build dialogue tree from textasset
+        TextAsset dialogueFile = Resources.Load(pathToFile) as TextAsset;
+        string[] dialogueTree = Regex.Split(dialogueFile.text, "\n");
+        List <DialogueNode> dialogueList = new List<DialogueNode>();
         List<List<string>> responseList = new List<List<string>>();
 
 
-        /*int pos = 0;
+        int pos = 2;
+
+        int textPos = 2;
+        int numResponsesPos = 3;
+        int responsePos = 4;
+        int endNodePos = 5;
         for (int i = 0; i < Int32.Parse(dialogueTree[0]); i++)
         {
-            for(int j = pos; pos<pos+5; j++)
+            DialogueNode node = new DialogueNode();
+            for (int j = pos; j < pos + 4; j++)
             {
-                if j
+               if (j == textPos)
+                {
+                    node.text = Regex.Split(dialogueTree[j], ": ")[1];
+                }
+                else if (j == numResponsesPos)
+                {
+                    node.numResponses = Int32.Parse(Regex.Split(dialogueTree[j], ": ")[1]);
+                }
+                else if(j == responsePos && node.numResponses > 0)
+                {
+                    string responseText = Regex.Split(dialogueTree[j], ": ")[1];
+                    responseList.Add(new List<string>(responseText.Split('|')));
+                }
+               else if(j == endNodePos)
+               {
+                    node.isEndNode = bool.Parse(Regex.Split(dialogueTree[j], ": ")[1]);
+               }
             }
-        } */
+            dialogueList.Add(node);
+            pos += 6;
+            textPos += 6;
+            responsePos += 6;
+            numResponsesPos += 6;
+            endNodePos += 6;
+        }
+
+        int counter = 0;
+        foreach (List<string> responses in responseList)
+        {
+            dialogueList[counter].responses = new List<KeyValuePair<string, DialogueNode>>();
+            foreach (string responsePair in responses)
+            {
+                string responseText = responsePair.Split(':')[0];
+                int index = Int32.Parse(responsePair.Split(':')[1][4].ToString());
+                dialogueList[counter].responses.Add(new KeyValuePair<string, DialogueNode>(responseText, dialogueList[index]));
+            }
+            counter++;
+        }
 
 
-        DialogueNode node1 = new DialogueNode();
-        DialogueNode node2 = new DialogueNode();
-        DialogueNode node3 = new DialogueNode();
-
-        node1.text = "Stop right there! State your business here.";
-        node2.text = "Show me the letter.";
-        node3.text = "Ok big man. Let's see what you've got. [COMBAT]";
-
-        node1.responses = new List<KeyValuePair<string, DialogueNode>>();
-        node1.numResponses = 2;
-
-        node1.responses.Add(new KeyValuePair<string, DialogueNode>("I received a letter from the king, he is expecting me.", node2));
-        node1.responses.Add(new KeyValuePair<string, DialogueNode>("Let me in you stupid naai.", node3));
-
-        node3.isEndNode = true;
-
-        DialogueNode node4 = new DialogueNode();
-        DialogueNode node5 = new DialogueNode();
-
-        node4.text = "I see. Right this way.";
-        node5.text = "You won't be getting in. Out of my sight.";
-        node4.isEndNode = true;
-        node5.isEndNode = true;
-
-
-        node2.responses = new List<KeyValuePair<string, DialogueNode>>();
-        node2.numResponses = 2;
-
-        node2.responses.Add(new KeyValuePair<string, DialogueNode>("[Show letter]", node4));
-        node2.responses.Add(new KeyValuePair<string, DialogueNode>("This letter is not to be seen by commoners.", node5));
-
-
-
-
-
-
-        //node4.responses = new List<KeyValuePair<string, DialogueNode>>();
-        //node4.numResponses = 2;
-
-
-        GoIntoThisNode(node1);
-
-        //displayText.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = node1.text;
-
-
-        //optionButton1.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "I like this.";
-        //optionButton2.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "I don't like this.";
+        GoIntoThisNode(dialogueList[0]);
 
     }
 
+    //Loads in this node's npc lines and creates buttons for player responses to the npc. Each button will call another GoIntoThisNode.
     public void GoIntoThisNode(DialogueNode node)
     {
         
@@ -142,6 +137,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    //Ends the dialogue by renabling the player controller and destroying dialogue components so that dialogue is not triggered again.
     public void EndDialogue()
     {
         GameObject.Find("Player").GetComponent<PlayerController>().enabled = true;
