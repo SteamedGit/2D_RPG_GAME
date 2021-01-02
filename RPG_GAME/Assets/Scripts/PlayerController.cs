@@ -12,7 +12,10 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     bool isFacingLeft;
     bool isFacingRight;
     bool isAttacking;
-   public bool isBlocking;
+    public bool isBlocking;
+
+
+    public HealthBar healthBar;
 
     [SerializeField]
     GameObject basicAttack1Hitbox;
@@ -47,11 +50,13 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
     private float jumpSpeed = 5f;
 
 
+
    
 
     // Start is called before the first frame update
     void Start()
     {
+        healthBar.SetHealth(health);
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -218,12 +223,14 @@ public class PlayerController : MonoBehaviour  //Author: Timothy Hitge (with hel
                 {
                     print("Missed Block");
                     health = health - collision.gameObject.GetComponent<EyeballProjectileScript>().doDamage();
+                    healthBar.SetHealth(health);
                     print(health);
                 }
             }
             else
             {
                 health = health - collision.gameObject.GetComponent<EyeballProjectileScript>().doDamage();
+                healthBar.SetHealth(health);
                 print(health);
             }
           

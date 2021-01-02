@@ -132,6 +132,7 @@ public class DialogueManager : MonoBehaviour
         {
             //GameObject.Find("Player").GetComponent<PlayerController>().enabled = true;
             GameObject endDialog = gameObject.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject;
+            endDialog.transform.SetAsLastSibling();
             endDialog.SetActive(true);
             endDialog.transform.GetChild(0).gameObject.SetActive(true);
         }
