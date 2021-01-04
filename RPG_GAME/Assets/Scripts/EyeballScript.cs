@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Enemy eyeball script.
+//Enemy chases player if he's within a certain range.
+//Rotates to fire at player.
+//TODO: Death animation
+//TODO: Take damage animation.
 public class EyeballScript : MonoBehaviour
 {
     Animator Animator;
@@ -38,7 +43,9 @@ public class EyeballScript : MonoBehaviour
     float timeTillNextAttack;
     float idleHeight;
 
-    // Start is called before the first frame update
+    //Basic initialisation.
+    //idleHeight is used as a way to keep the eyeball at a fixed height above the ground.
+    //Collisions with the player were changing its position.
     void Start()
     {
         Animator = GetComponent<Animator>();
@@ -49,14 +56,18 @@ public class EyeballScript : MonoBehaviour
     }
 
     // Update is called once per frame
+    //****NOTE: Not sure whether any of this should be in FixedUpdate(). Working fine for now****
+    //Calculates distance from eyeball to player. 
+    //If within agrorange but not within stopdistance and not currently attacking the player, chases the player.
+    //else if out of agrorange or at stopping distance, stop chasing player.
+    //if within agrorange and within stopping distance attack the player.(this can be triggered the same frame that either of the other two are.)
     void Update()
     {
         float distToPlayer = Vector2.Distance(transform.position, player.position);
-        // print("distToPlayer: " + distToPlayer);
-        //print(rb2d.velocity);
+
         if (distToPlayer < agroRange && Math.Abs((transform.position.x - player.position.x)) > stopDistance && !isAttacking)
         {
-            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f); //resets rotation as the eyeball may have rotated when firing.
             isChasing = true;
             ChasePlayer();
         }
@@ -69,7 +80,7 @@ public class EyeballScript : MonoBehaviour
         if(distToPlayer < agroRange && Math.Abs((transform.position.x - player.position.x)) <= stopDistance) //if player in agro & eyeball at stopping distance
         {
             Vector3 direction = player.transform.position - transform.position;
-            direction.Normalize();
+            direction.Normalize(); //we only care about direction. Vector changed to magnitude 1 with same direction.
             float rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Attack(rotation);
 
@@ -78,7 +89,7 @@ public class EyeballScript : MonoBehaviour
 
     }
 
-   
+
     private void FixedUpdate()
     {
         if (!isChasing)
@@ -94,18 +105,17 @@ public class EyeballScript : MonoBehaviour
 
     }
 
+    //If player hits eyeball take damage.
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name == "BasicAttack1HitBox")
         {
             health = health - collision.gameObject.GetComponent<BasicAttack1Script>().doDamage();
-            //print(health);
             
         }
         if(collision.gameObject.name == "BasicJumpAttack1HitBox")
         {
             health = health - collision.gameObject.GetComponent<BasicJumpAttack1Script>().doDamage();
-            //print(health);
         }
     }
 
@@ -114,7 +124,7 @@ public class EyeballScript : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    //Moves towards player along the x-axis. Flips localscale if needbe.
     void ChasePlayer()
     {
         if(transform.position.x < player.position.x) // on left of player
@@ -131,7 +141,7 @@ public class EyeballScript : MonoBehaviour
         }
     }
 
-
+    //Stops moving. If not at idleheight moves back to this height.
     void StopChasingPlayer()
     {
         rb2d.velocity = new Vector2(0, 0);
@@ -143,6 +153,8 @@ public class EyeballScript : MonoBehaviour
 
     }
 
+    //Rotates the eyeball so that it is pointer at the player when it fires.
+    //Instantiates a projectile once it is pointing at the player.
     void Attack(float rotation)
     {
         isAttacking = true;

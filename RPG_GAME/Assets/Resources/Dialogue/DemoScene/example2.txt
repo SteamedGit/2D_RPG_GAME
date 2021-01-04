@@ -1,0 +1,24 @@
+4
+Root
+text: Dafuq??? Kinda stanky doe.
+numResponses: 3
+responses: Shieeet.:node1|Bruhbruhburh.:node2|monke.:node3
+isEndNode: false
+
+Node1
+text: Kinda stanky.
+numResponses: 0
+responses:
+isEndNode: true
+
+Node2
+text: xD
+numResponses: 0
+responses:
+isEndNode: true
+
+Node3
+text: NO ways!
+numResponses: 0
+responses:
+isEndNode: true

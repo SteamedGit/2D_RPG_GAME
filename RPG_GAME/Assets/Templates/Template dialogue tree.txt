@@ -1,0 +1,10 @@
+<Number of nodes>
+Root
+text:
+numResponses: 
+responses: <response>:<node>|<response>:<node>
+isEndNode:
+
+Node1
+text:
+etc....

@@ -1,0 +1,30 @@
+5
+Root
+text: Stop right there! State your business here.
+numResponses: 2
+responses: I received a letter from the king, he is expecting me.:node1|Let me in you stupid naai.:node2
+isEndNode: false
+
+Node1
+text: Show me the letter.
+numResponses: 2
+responses: [Show letter]:node3|This letter is not to be seen by commoners.:node4
+isEndNode: false
+
+Node2
+text: Ok big man. Let's see what you've got. [COMBAT]
+numResponses: 0
+responses:
+isEndNode: true
+
+Node3
+text: I see. Right this way.
+numResponses: 0
+responses:
+isEndNode: true
+
+Node4: 
+text: You won't be getting in. Out of my sight.
+numResponses: 0
+responses:
+isEndNode: true
